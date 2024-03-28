@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DotNet7WebAPIExample.Models;
-using Microsoft.AspNetCore.Http;
+using DotNet7WebAPIExample.Services.SuperHeroService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNet7WebAPIExample.Controllers
@@ -12,23 +8,25 @@ namespace DotNet7WebAPIExample.Controllers
     [ApiController]
     public class SuperHeroController : ControllerBase
     {
-        private static List<SuperHero> _superHeroes = new List<SuperHero>()
+        private readonly ISuperHeroService _superHeroService;
+
+        public SuperHeroController(ISuperHeroService superHeroService)
         {
-            new SuperHero(){Id = 1, Name = "Spider Man", FirstName = "Peter", LastName = "Parker", Place = "NY"},
-            new SuperHero(){Id = 2, Name = "Iron Man", FirstName = "Tony", LastName = "Stark", Place = "Malibu"},
-        };
-            
+            _superHeroService = superHeroService;
+        }
+
         [HttpGet]
+        [Route("GetAllHeroes")]
         public async Task<ActionResult<List<SuperHero>>> GetAllHeroes()
         {
-            return Ok(_superHeroes);
+            return Ok(_superHeroService.GetAllHeroes());
         }
         
         [HttpGet]
         [Route("GetSingleHero/{id}")]
         public async Task<ActionResult<SuperHero>> GetSingleHero(int id)
         {
-            var hero = _superHeroes.FirstOrDefault(x => x.Id == id);
+            var hero = _superHeroService.GetSingleHero(id);
             if (hero is null)
             {
                 return NotFound();
@@ -41,41 +39,33 @@ namespace DotNet7WebAPIExample.Controllers
         [Route("AddHero")]
         public async Task<ActionResult<List<SuperHero>>> AddHero([FromBody]SuperHero newHero)
         {
-            _superHeroes.Add(newHero);
-            return Ok(_superHeroes);
+            return Ok(_superHeroService.AddHero(newHero));
         }
         
         [HttpPut]
         [Route("UpdateHero/{id}")]
         public async Task<ActionResult<List<SuperHero>>> UpdateHero(int id, [FromBody]SuperHero request)
         {
-            var hero = _superHeroes.FirstOrDefault(x => x.Id == id);
-            if (hero is null)
+            var heroes = _superHeroService.UpdateHero(id, request);
+            if (heroes is null)
             {
                 return NotFound();
             }
 
-            hero.FirstName = request.FirstName;
-            hero.LastName = request.LastName;
-            hero.Name = request.Name;
-            hero.Place = request.Place;
-                
-            return Ok(_superHeroes);
+            return Ok(heroes);
         }
         
         [HttpDelete]
         [Route("DeleteHero/{id}")]
-        public async Task<ActionResult<List<SuperHero>>> UpdateHero(int id)
+        public async Task<ActionResult<List<SuperHero>>> DeleteHero(int id)
         {
-            var hero = _superHeroes.FirstOrDefault(x => x.Id == id);
-            if (hero is null)
+            var heroes = _superHeroService.DeleteHero(id);
+            if (heroes is null)
             {
                 return NotFound();
             }
 
-            _superHeroes.Remove(hero);
-
-            return Ok(_superHeroes);
+            return Ok(heroes);
         }
     }
 }
