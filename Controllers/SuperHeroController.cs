@@ -36,5 +36,13 @@ namespace DotNet7WebAPIExample.Controllers
             
             return Ok(hero);
         }
+        
+        [HttpPost]
+        [Route("AddHero")]
+        public async Task<ActionResult<List<SuperHero>>> AddHero([FromBody]SuperHero newHero)
+        {
+            _superHeroes.Add(newHero);
+            return Ok(_superHeroes);
+        }
     }
 }
