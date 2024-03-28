@@ -44,5 +44,38 @@ namespace DotNet7WebAPIExample.Controllers
             _superHeroes.Add(newHero);
             return Ok(_superHeroes);
         }
+        
+        [HttpPut]
+        [Route("UpdateHero/{id}")]
+        public async Task<ActionResult<List<SuperHero>>> UpdateHero(int id, [FromBody]SuperHero request)
+        {
+            var hero = _superHeroes.FirstOrDefault(x => x.Id == id);
+            if (hero is null)
+            {
+                return NotFound();
+            }
+
+            hero.FirstName = request.FirstName;
+            hero.LastName = request.LastName;
+            hero.Name = request.Name;
+            hero.Place = request.Place;
+                
+            return Ok(_superHeroes);
+        }
+        
+        [HttpDelete]
+        [Route("DeleteHero/{id}")]
+        public async Task<ActionResult<List<SuperHero>>> UpdateHero(int id)
+        {
+            var hero = _superHeroes.FirstOrDefault(x => x.Id == id);
+            if (hero is null)
+            {
+                return NotFound();
+            }
+
+            _superHeroes.Remove(hero);
+
+            return Ok(_superHeroes);
+        }
     }
 }

@@ -29,12 +29,6 @@ namespace DotNet7WebAPIExample.Controllers
             })
             .ToArray();
         }
-
-        [HttpGet]
-        [Route("HelloWorld")]
-        public string HelloWorld() 
-        {
-            return "Hello world!";
-        }
+        
     }
 }
