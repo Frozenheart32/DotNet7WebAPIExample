@@ -19,14 +19,14 @@ namespace DotNet7WebAPIExample.Controllers
         [Route("GetAllHeroes")]
         public async Task<ActionResult<List<SuperHero>>> GetAllHeroes()
         {
-            return Ok(_superHeroService.GetAllHeroes());
+            return await _superHeroService.GetAllHeroes();
         }
         
         [HttpGet]
         [Route("GetSingleHero/{id}")]
         public async Task<ActionResult<SuperHero>> GetSingleHero(int id)
         {
-            var hero = _superHeroService.GetSingleHero(id);
+            var hero = await _superHeroService.GetSingleHero(id);
             if (hero is null)
             {
                 return NotFound();
@@ -39,14 +39,14 @@ namespace DotNet7WebAPIExample.Controllers
         [Route("AddHero")]
         public async Task<ActionResult<List<SuperHero>>> AddHero([FromBody]SuperHero newHero)
         {
-            return Ok(_superHeroService.AddHero(newHero));
+            return Ok(await _superHeroService.AddHero(newHero));
         }
         
         [HttpPut]
         [Route("UpdateHero/{id}")]
         public async Task<ActionResult<List<SuperHero>>> UpdateHero(int id, [FromBody]SuperHero request)
         {
-            var heroes = _superHeroService.UpdateHero(id, request);
+            var heroes = await _superHeroService.UpdateHero(id, request);
             if (heroes is null)
             {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace DotNet7WebAPIExample.Controllers
         [Route("DeleteHero/{id}")]
         public async Task<ActionResult<List<SuperHero>>> DeleteHero(int id)
         {
-            var heroes = _superHeroService.DeleteHero(id);
+            var heroes = await _superHeroService.DeleteHero(id);
             if (heroes is null)
             {
                 return NotFound();
