@@ -4,7 +4,7 @@ namespace DotNet7WebAPIExample.Services.SuperHeroService;
 
 public class SuperHeroService : ISuperHeroService
 {
-    private static List<SuperHero> _superHeroes = new List<SuperHero>()
+    private static readonly List<SuperHero> _superHeroes = new List<SuperHero>()
     {
         new SuperHero(){Id = 1, Name = "Spider Man", FirstName = "Peter", LastName = "Parker", Place = "NY"},
         new SuperHero(){Id = 2, Name = "Iron Man", FirstName = "Tony", LastName = "Stark", Place = "Malibu"},
